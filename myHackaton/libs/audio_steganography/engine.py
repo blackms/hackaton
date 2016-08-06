@@ -2,8 +2,6 @@ import os
 import random
 import warnings
 import wave
-import numpy
-
 from math import ceil
 from struct import unpack, pack
 
@@ -56,15 +54,11 @@ def length_in_bytes(end):
     return [endlolo, endlohi, endhilo, endhihi]
 
 
-def encode(carrier_file, message_file, encoded_file):
+def encode(carrier_file, message, encoded_file):
     """ Encodes data into a file """
     print("Encoding...")
 
-    # check if the payload file exists
-    if not os.path.isfile(message_file):
-        print("ERROR: Playload file {} doesn not exists!".format(message_file))
-        exit()
-    tohide = open(message_file, 'rb').read()
+    tohide = message
     f_bytes = bytearray(tohide)
 
     inaudio = wave.open(carrier_file, 'rb')
@@ -169,12 +163,11 @@ def get_bits_in_bytes(inaudio, end):
     return debytes
 
 
-def decode(steganod_file, decoded_message_file):
+def decode(steganod_file):
     """ Decode data from a file """
     print("Decoding...")
 
     inaudio = wave.open(steganod_file, 'rb')
-    outmsg = open(decoded_message_file, 'wb')
 
     totalframes = inaudio.getnframes()
 
@@ -186,5 +179,4 @@ def decode(steganod_file, decoded_message_file):
     debytes = get_bits_in_bytes(inaudio, end + 32)
     inaudio.close()
 
-    outmsg.write(bytearray(debytes[4:]))
-    outmsg.close()
+    return bytearray(debytes[4:])

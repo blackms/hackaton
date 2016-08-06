@@ -26,8 +26,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     print("Decoding file: {}".format(decodedMessageFile))
-    try:
-        decode(decodedOutputFile, decodedMessageFile)
-    except:
-        print("Nope...")
-        sys.exit(1)
+    decode(encodedOutputFile, decodedMessageFile)
+    with open(decodedMessageFile, 'r') as fh:
+        print("Content of the file:\n{}".format(fh.read()))
+
